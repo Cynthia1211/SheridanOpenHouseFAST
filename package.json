@@ -1,0 +1,11 @@
+{
+  "name": "sheridan-open-house-program-explorer",
+  "private": true,
+  "scripts": {
+    "dev:chat": "wrangler dev",
+    "deploy:chat": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
