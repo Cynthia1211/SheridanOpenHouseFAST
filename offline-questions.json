@@ -1,0 +1,176 @@
+{
+  "quiz_title": "Sheridan College Computing Program Selector",
+  "total_questions": 5,
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which best describes your current academic or professional background?",
+      "options": [
+        {
+          "label": "A",
+          "text": "High school student or recent high school graduate",
+          "target_level": ["diploma", "degree"]
+        },
+        {
+          "label": "B",
+          "text": "Recent college or university graduate",
+          "target_level": ["grad_certificate", "degree_completion"]
+        },
+        {
+          "label": "C",
+          "text": "Working professional seeking skill expansion or career transition",
+          "target_level": ["grad_certificate"]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "question": "Which broad technological domain excites you the most?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Software Development, Mobile Apps & Game Programming",
+          "track": "software_development"
+        },
+        {
+          "label": "B",
+          "text": "Cybersecurity, Ethical Hacking & Infrastructure Defense",
+          "track": "cybersecurity"
+        },
+        {
+          "label": "C",
+          "text": "Artificial Intelligence, Data Science & Machine Learning",
+          "track": "ai_data"
+        },
+        {
+          "label": "D",
+          "text": "Network Engineering, IT Infrastructure & Systems Administration",
+          "track": "networks_infrastructure"
+        },
+        {
+          "label": "E",
+          "text": "IT Project Management, UX/UI Design & Interactive Media",
+          "track": "management_design"
+        },
+        {
+          "label": "F",
+          "text": "Comprehensive Computer Science Theory & Large-Scale Systems",
+          "track": "computer_science"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "question": "What type of program duration and qualification are you aiming for?",
+      "options": [
+        {
+          "label": "A",
+          "text": "1-Year Graduate Certificate (Fast-track specialized credential)",
+          "duration": "1_year_grad_cert"
+        },
+        {
+          "label": "B",
+          "text": "2-Year College Diploma or Graduate Certificate (Quick workforce entry)",
+          "duration": "2_year_diploma_grad"
+        },
+        {
+          "label": "C",
+          "text": "3-Year Advanced Diploma (Deep practical training with optional co-op)",
+          "duration": "3_year_advanced_diploma"
+        },
+        {
+          "label": "D",
+          "text": "4-Year Honours Bachelor’s Degree (In-depth theoretical foundation and mandatory co-op)",
+          "duration": "4_year_degree"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "question": "When you picture your ideal daily tasks in tech, what do you prefer doing?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Writing code, building applications, designing interfaces, or creating interactive game graphics.",
+          "task_preference": "coding_dev"
+        },
+        {
+          "label": "B",
+          "text": "Investigating security threats, auditing vulnerabilities, and defending network environments.",
+          "task_preference": "security_ops"
+        },
+        {
+          "label": "C",
+          "text": "Training smart data models, analyzing big data patterns, and building automated tools.",
+          "task_preference": "ai_analytics"
+        },
+        {
+          "label": "D",
+          "text": "Configuring routers, setting up cloud hardware, and keeping system backbones running smoothly.",
+          "task_preference": "sys_networking"
+        },
+        {
+          "label": "E",
+          "text": "Leading agile sprint teams, planning projects, or designing user-centric web/app interfaces.",
+          "task_preference": "mgmt_ux"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "question": "When you graduate, what kind of project or real-world impact would you love to focus on?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Building slick mobile apps people use daily, or crafting fun, interactive video games and digital experiences.",
+          "matched_programs": [
+            "Bachelor of Computer Science (Mobile Computing)",
+            "Game Development – Advanced Programming",
+            "Computer Programming (Diploma)"
+          ]
+        },
+        {
+          "label": "B",
+          "text": "Protecting companies from hackers, investigating cyber attacks, or keeping digital and industrial control systems safe.",
+          "matched_programs": [
+            "Cloud Security (Graduate Certificate)",
+            "Computer Systems Technician – Cyber Security",
+            "Bachelor of Information Sciences – Cyber Security",
+            "Operational Technology Cybersecurity"
+          ]
+        },
+        {
+          "label": "C",
+          "text": "Using smart data and AI to solve complex puzzles, automate predictions, or create intelligent solutions.",
+          "matched_programs": [
+            "Artificial Intelligence Development and Applications (Graduate Certificate)"
+          ]
+        },
+        {
+          "label": "D",
+          "text": "Building and maintaining the backbone technology—ensuring enterprise routers, cloud servers, and networks stay online.",
+          "matched_programs": [
+            "Computer Systems Technician – Information Technology Infrastructure Services",
+            "Network Engineering Technology"
+          ]
+        },
+        {
+          "label": "E",
+          "text": "Managing tech teams and project workflows from start to finish, or creating engaging user interface designs without heavy back-end coding.",
+          "matched_programs": [
+            "Project Management – Information Technology",
+            "Interactive Media Management – Digital Design"
+          ]
+        },
+        {
+          "label": "F",
+          "text": "Designing large-scale enterprise software architectures and mastering core computing theory.",
+          "matched_programs": [
+            "Bachelor of Computer Science",
+            "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)"
+          ]
+        }
+      ]
+    }
+  ]
+}

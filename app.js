@@ -21,6 +21,7 @@ const welcomeMessage = messages.querySelector('.message.bot').cloneNode(true);
 
 let programs = [];
 let knowledgeMarkdown = '';
+let backgroundTargetLevels = Object.create(null);
 let chatHistory = [];
 let isSending = false;
 let chatSessionId = 0;
@@ -35,6 +36,35 @@ async function loadKnowledge() {
     programs = parsePrograms(knowledgeMarkdown);
     if (programs.length !== 14) console.warn(`Expected 14 FAST programs; loaded ${programs.length}.`);
     if (programs.length < 2) throw new Error('The knowledge file needs at least two programs.');
+    try {
+      const offlineResponse = await fetch('offline-questions.json');
+      if (!offlineResponse.ok) throw new Error(`Could not load offline questions (${offlineResponse.status}).`);
+      const offlineQuiz = await offlineResponse.json();
+      if (!Array.isArray(offlineQuiz.questions) || offlineQuiz.questions.length < 2) {
+        throw new Error('The offline question bank is empty or invalid.');
+      }
+      const backgroundQuestion = offlineQuiz.questions[0];
+      if (typeof backgroundQuestion.question === 'string' && Array.isArray(backgroundQuestion.options)) {
+        const backgroundOptions = backgroundQuestion.options.filter(option =>
+          typeof option.text === 'string' && Array.isArray(option.target_level)
+        );
+        if (backgroundOptions.length >= 2) {
+          firstQuizQuestion.question = backgroundQuestion.question;
+          firstQuizQuestion.options = backgroundOptions.map(option => option.text);
+          backgroundTargetLevels = Object.fromEntries(backgroundOptions.map(option => [option.text, option.target_level]));
+        }
+      }
+      localQuizQuestionBank.splice(0, localQuizQuestionBank.length, ...offlineQuiz.questions.slice(1)
+        .filter(item => typeof item.question === 'string' && Array.isArray(item.options))
+        .map(item => ({
+          id: Number(item.id),
+          question: item.question,
+          options: item.options.filter(option => typeof option.text === 'string').map(option => option.text)
+        }))
+        .filter(item => Number.isInteger(item.id) && item.options.length >= 2));
+    } catch (error) {
+      console.warn('Offline quiz question bank could not be loaded:', error.message);
+    }
     statusNote.textContent = '';
     setServiceStatus('ready', 'Ready to help');
     renderProgramChecklist();
@@ -330,6 +360,9 @@ const firstQuizQuestion = {
     'I’m exploring different fields.'
   ]
 };
+const QUIZ_RESPONSE_TIMEOUT_MS = 2000;
+const localQuizQuestionBank = [];
+let localQuizMode = false;
 let quizQuestions = [firstQuizQuestion];
 let quizAnswers = [];
 let currentQuestion = 0;
@@ -337,28 +370,83 @@ let quizRecommendations = [];
 let quizLoading = false;
 let quizError = '';
 
+function nextLocalQuizQuestion() {
+  const nextQuestionNumber = quizQuestions.length + 1;
+  return localQuizQuestionBank.find(item => item.id === nextQuestionNumber) || null;
+}
+
+function showLocalQuizFallback(controller) {
+  const fallbackQuestion = quizAnswers.length < 7 ? nextLocalQuizQuestion() : null;
+  if (!fallbackQuestion) return false;
+  localQuizMode = true;
+  controller.abort();
+  quizQuestions.push(fallbackQuestion);
+  currentQuestion = quizQuestions.length - 1;
+  return true;
+}
+
 async function requestQuizStep() {
   quizLoading = true;
   quizError = '';
   renderQuiz();
   try {
+    if (localQuizMode) {
+      const fallbackQuestion = quizAnswers.length < 7 ? nextLocalQuizQuestion() : null;
+      if (fallbackQuestion) {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        quizQuestions.push(fallbackQuestion);
+        currentQuestion = quizQuestions.length - 1;
+        return;
+      }
+    }
+
+    const recommendNow = localQuizMode && !nextLocalQuizQuestion();
     const quizUrl = new URL(window.CHAT_API_URL);
     quizUrl.pathname = quizUrl.pathname.replace(/\/api\/chat\/?$/, '/api/quiz');
-    const response = await fetch(quizUrl, {
+    const controller = new AbortController();
+    const requestPromise = fetch(quizUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({
-        answers: quizAnswers.map((answer, index) => ({ question: quizQuestions[index].question, answer })),
-        knowledge: knowledgeMarkdown
+        answers: quizAnswers.map((answer, index) => ({
+          question: quizQuestions[index].question,
+          answer,
+          ...(index === 0 && backgroundTargetLevels[answer]
+            ? { target_level: backgroundTargetLevels[answer] }
+            : {})
+        })),
+        knowledge: knowledgeMarkdown,
+        recommendNow
       })
+    }).then(async response => {
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || `Quiz service returned ${response.status}.`);
+      return result;
     });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(result.error || `Quiz service returned ${response.status}.`);
+    let timeoutId;
+    let outcome = await Promise.race([
+      requestPromise.then(result => ({ type: 'response', result }), error => ({ type: 'error', error })),
+      new Promise(resolve => {
+        timeoutId = setTimeout(() => resolve({ type: 'timeout' }), QUIZ_RESPONSE_TIMEOUT_MS);
+      })
+    ]);
+    clearTimeout(timeoutId);
+
+    if (outcome.type === 'timeout') {
+      if (!recommendNow && showLocalQuizFallback(controller)) return;
+      outcome = await requestPromise.then(result => ({ type: 'response', result }), error => ({ type: 'error', error }));
+    }
+    if (outcome.type === 'error') {
+      if (!recommendNow && showLocalQuizFallback(controller)) return;
+      throw outcome.error;
+    }
+    const result = outcome.result;
     if (result.type === 'question' && result.question && Array.isArray(result.options) && result.options.length >= 2) {
       quizQuestions.push({ question: result.question, options: result.options });
       currentQuestion = quizQuestions.length - 1;
     } else if (result.type === 'recommendation' && Array.isArray(result.programs) && result.programs.length) {
-      quizRecommendations = result.programs;
+      quizRecommendations = result.programs.slice(0, 2);
       currentQuestion = quizQuestions.length;
     } else {
       throw new Error('The quiz service returned an incomplete result. Please try again.');
@@ -378,6 +466,7 @@ function resetQuiz() {
   quizAnswers = [];
   currentQuestion = 0;
   quizRecommendations = [];
+  localQuizMode = false;
   quizLoading = false;
   quizError = '';
   renderQuiz();
