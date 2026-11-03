@@ -61,27 +61,22 @@
     },
     {
       "id": 3,
-      "question": "What type of program duration and qualification are you aiming for?",
+      "question": "How long would you like to study before starting your next step?",
       "options": [
         {
           "label": "A",
-          "text": "1-Year Graduate Certificate (Fast-track specialized credential)",
-          "duration": "1_year_grad_cert"
+          "text": "A shorter program so I can get started as soon as possible",
+          "duration": "short_term"
         },
         {
           "label": "B",
-          "text": "2-Year College Diploma or Graduate Certificate (Quick workforce entry)",
-          "duration": "2_year_diploma_grad"
+          "text": "A longer program that lets me explore the subject in depth",
+          "duration": "long_term_in_depth"
         },
         {
           "label": "C",
-          "text": "3-Year Advanced Diploma (Deep practical training with optional co-op)",
-          "duration": "3_year_advanced_diploma"
-        },
-        {
-          "label": "D",
-          "text": "4-Year Honours Bachelor’s Degree (In-depth theoretical foundation and mandatory co-op)",
-          "duration": "4_year_degree"
+          "text": "I’m open to different program lengths",
+          "duration": "no_preference"
         }
       ]
     },

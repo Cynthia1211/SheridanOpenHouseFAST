@@ -360,7 +360,8 @@ const firstQuizQuestion = {
     'I’m exploring different fields.'
   ]
 };
-const QUIZ_RESPONSE_TIMEOUT_MS = 2000;
+const QUIZ_RESPONSE_TIMEOUT_MS = 3000;
+const ENABLE_LOCAL_QUIZ_FALLBACK = true;
 const localQuizQuestionBank = [];
 let localQuizMode = false;
 let quizQuestions = [firstQuizQuestion];
@@ -376,6 +377,7 @@ function nextLocalQuizQuestion() {
 }
 
 function showLocalQuizFallback(controller) {
+  if (!ENABLE_LOCAL_QUIZ_FALLBACK) return false;
   const fallbackQuestion = quizAnswers.length < 7 ? nextLocalQuizQuestion() : null;
   if (!fallbackQuestion) return false;
   localQuizMode = true;
