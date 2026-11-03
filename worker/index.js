@@ -1,6 +1,11 @@
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_KNOWLEDGE_LENGTH = 50000;
 const MAX_HISTORY_MESSAGES = 12;
+const GEMINI_API_KEY_BINDINGS = [
+  'GEMINI_API_KEY',
+  'GEMINI_API_KEY_BACKUP_1',
+  'GEMINI_API_KEY_BACKUP_2'
+];
 
 const SYSTEM_INSTRUCTION = `You are the Sheridan Open House program advisor for the Faculty of Applied Science and Technology (FAST).
 Answer naturally and helpfully using the supplied program reference as the source of truth for FAST program facts. Do not invent admissions requirements, tuition, dates, locations, credentials, course details, or career outcomes. If the reference does not contain an answer, say so clearly and suggest asking the program team at Open House.
@@ -24,7 +29,7 @@ export default {
     if (!['/api/chat', '/api/quiz'].includes(pathname)) return json({ error: 'Not found.' }, 404, corsHeaders);
     if (request.method !== 'POST') return json({ error: 'Use POST for chat requests.' }, 405, corsHeaders);
     if (!originAllowed) return json({ error: 'This site is not allowed to use the chat service.' }, 403, corsHeaders);
-    if (!env.GEMINI_API_KEY) return json({ error: 'The chat service is missing its Gemini API key.' }, 503, corsHeaders);
+    if (!getGeminiApiKeys(env).length) return json({ error: 'The chat service is missing its Gemini API key.' }, 503, corsHeaders);
 
     let body;
     try {
@@ -142,32 +147,56 @@ function findProgramName(knownPrograms, candidate) {
 }
 
 async function callGemini(env, input, systemInstruction, options = {}) {
+  const apiKeys = getGeminiApiKeys(env);
   const primaryModel = env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
   const models = [...new Set([primaryModel, 'gemini-3.6-flash', 'gemini-2.5-flash'])];
   let response;
   let result = {};
   try {
-    for (const model of models) {
-      response = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-        body: JSON.stringify({
-          model,
-          input,
-          system_instruction: systemInstruction,
-          generation_config: { temperature: 0.3, max_output_tokens: options.maxOutputTokens || 350, thinking_level: 'minimal' },
-          ...(options.responseFormat ? { response_format: options.responseFormat } : {}),
-          store: false
-        })
-      });
-      result = await response.json().catch(() => ({}));
-      if (response.ok || response.status !== 503) break;
-      console.warn(`${model} is unavailable (503); trying the next Flash model.`);
+    for (let keyIndex = 0; keyIndex < apiKeys.length; keyIndex++) {
+      const apiKey = apiKeys[keyIndex];
+      for (const model of models) {
+        response = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+          body: JSON.stringify({
+            model,
+            input,
+            system_instruction: systemInstruction,
+            generation_config: { temperature: 0.3, max_output_tokens: options.maxOutputTokens || 350, thinking_level: 'minimal' },
+            ...(options.responseFormat ? { response_format: options.responseFormat } : {}),
+            store: false
+          })
+        });
+        result = await response.json().catch(() => ({}));
+        if (response.ok) return { response, result };
+        if (isGeminiKeyError(response, result)) {
+          if (keyIndex < apiKeys.length - 1) {
+            console.warn(`Gemini key ${keyIndex + 1} returned an authentication, permission, or quota error; trying the next configured key.`);
+            break;
+          }
+          return { response, result };
+        }
+        if (response.status !== 503) return { response, result };
+        console.warn(`${model} is unavailable (503); trying the next Flash model.`);
+      }
     }
   } catch {
     return { response: new Response(null, { status: 502 }), result: {} };
   }
   return { response, result };
+}
+
+function getGeminiApiKeys(env) {
+  return [...new Set(GEMINI_API_KEY_BINDINGS.map(name => env[name]?.trim()).filter(Boolean))];
+}
+
+function isGeminiKeyError(response, result) {
+  const status = result?.error?.status || '';
+  const message = result?.error?.message || '';
+  return [401, 403, 429].includes(response.status)
+    || ['UNAUTHENTICATED', 'PERMISSION_DENIED', 'RESOURCE_EXHAUSTED'].includes(status)
+    || /api[_ ]key.{0,30}(invalid|not valid)|invalid.{0,30}api[_ ]key/i.test(message);
 }
 
 function extractOutputText(result) {
