@@ -13,6 +13,8 @@ const comparisonResults = document.querySelector('#comparisonResults');
 const compareSelectedButton = document.querySelector('#compareSelectedButton');
 const compareSelectionCount = document.querySelector('#compareSelectionCount');
 const MAX_COMPARE_PROGRAMS = 4;
+const COMPARISON_LABEL_COLUMN_WIDTH = 160;
+const COMPARISON_PROGRAM_COLUMN_WIDTH = 320;
 const serviceStatus = document.querySelector('#serviceStatus');
 const serviceStatusDot = document.querySelector('#serviceStatusDot');
 const welcomeMessage = messages.querySelector('.message.bot').cloneNode(true);
@@ -136,6 +138,8 @@ function renderComparisonTable() {
   wrapper.className = 'comparison-table-wrap';
   const table = document.createElement('table');
   table.className = 'comparison-table';
+  table.style.tableLayout = 'fixed';
+  table.style.width = `${COMPARISON_LABEL_COLUMN_WIDTH + COMPARISON_PROGRAM_COLUMN_WIDTH * selected.length}px`;
   const head = document.createElement('thead');
   const headerRow = document.createElement('tr');
   const detailHeader = document.createElement('th');
@@ -319,11 +323,11 @@ function addTypingIndicator() {
 }
 
 const firstQuizQuestion = {
-  question: 'Which best describes your current situation?',
+  question: 'Which best describes you right now?',
   options: [
-    'I’m in high school or have recently graduated.',
-    'I have a few years of work experience and want to expand my skills.',
-    'Neither fits me well — I’m still exploring.'
+    'I’m in high school or just graduated.',
+    'I have work experience and want to learn more.',
+    'I’m exploring different fields.'
   ]
 };
 let quizQuestions = [firstQuizQuestion];
