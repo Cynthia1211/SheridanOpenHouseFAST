@@ -23,6 +23,7 @@ The app can stay on GitHub Pages. A separate Cloudflare Worker calls Gemini for 
 3. Run `npx wrangler login` and authorize Cloudflare in the browser.
 4. Run `npm run deploy:chat` to create the Worker. Wrangler prints the Worker URL.
 5. Run `npx wrangler secret put GEMINI_API_KEY` and paste a key created in Google AI Studio. To add backups, run `npx wrangler secret put GEMINI_API_KEY_BACKUP_1` and optionally `npx wrangler secret put GEMINI_API_KEY_BACKUP_2`, pasting one key each time. The Worker tries the next configured key when Gemini returns an authentication, permission, or quota error. For separate quota pools, use keys from different Google Cloud projects; keys in the same project share quota. Each secret update publishes a new Worker version.
-6. Set the URL in `chat-config.js` to your Worker URL with the `/api/chat` suffix, for example `https://sheridan-open-house-chat.your-account.workers.dev/api/chat`, then push the change to GitHub.
+6. The Worker stores per-key quota state in the `GEMINI_KEY_STATE` KV namespace configured in `wrangler.jsonc`. After any configured key returns a quota error, the current request falls back to the next active key and that key is skipped for 24 hours. After that, the Worker tries it again.
+7. Set the URL in `chat-config.js` to your Worker URL with the `/api/chat` suffix, for example `https://sheridan-open-house-chat.your-account.workers.dev/api/chat`, then push the change to GitHub.
 
 Never put the Gemini API key in `app.js`, `chat-config.js`, or the GitHub repository. If a key was previously placed in frontend code, revoke it in Google AI Studio and create a new key for the Worker.

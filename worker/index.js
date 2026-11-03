@@ -6,6 +6,10 @@ const GEMINI_API_KEY_BINDINGS = [
   'GEMINI_API_KEY_BACKUP_1',
   'GEMINI_API_KEY_BACKUP_2'
 ];
+const KEY_INACTIVE_KV_PREFIX = 'gemini-key-inactive-until';
+const KEY_INACTIVE_TTL_SECONDS = 24 * 60 * 60;
+const KEY_STATE_CACHE_MS = 30 * 1000;
+const keyStateCache = new Map();
 
 const SYSTEM_INSTRUCTION = `You are the Sheridan Open House program advisor for the Faculty of Applied Science and Technology (FAST).
 Answer naturally and helpfully using the supplied program reference as the source of truth for FAST program facts. Do not invent admissions requirements, tuition, dates, locations, credentials, course details, or career outcomes. If the reference does not contain an answer, say so clearly and suggest asking the program team at Open House.
@@ -147,7 +151,14 @@ function findProgramName(knownPrograms, candidate) {
 }
 
 async function callGemini(env, input, systemInstruction, options = {}) {
-  const apiKeys = getGeminiApiKeys(env);
+  const configuredKeys = getGeminiApiKeys(env);
+  const apiKeys = [];
+  for (const configuredKey of configuredKeys) {
+    if (!await isGeminiKeyInactive(env, configuredKey.binding)) apiKeys.push(configuredKey);
+  }
+  if (!apiKeys.length) {
+    return { response: new Response(null, { status: 429 }), result: { error: { message: 'All configured Gemini API keys are temporarily inactive.' } } };
+  }
   const primaryModel = env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
   const models = [...new Set([primaryModel, 'gemini-3.6-flash', 'gemini-2.5-flash'])];
   let response;
@@ -158,7 +169,7 @@ async function callGemini(env, input, systemInstruction, options = {}) {
       for (const model of models) {
         response = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey.value },
           body: JSON.stringify({
             model,
             input,
@@ -171,8 +182,9 @@ async function callGemini(env, input, systemInstruction, options = {}) {
         result = await response.json().catch(() => ({}));
         if (response.ok) return { response, result };
         if (isGeminiKeyError(response, result)) {
+          if (isGeminiQuotaError(response, result)) await markGeminiKeyInactive(env, apiKey.binding);
           if (keyIndex < apiKeys.length - 1) {
-            console.warn(`Gemini key ${keyIndex + 1} returned an authentication, permission, or quota error; trying the next configured key.`);
+            console.warn(`${apiKey.binding} returned an authentication, permission, or quota error; trying the next active key.`);
             break;
           }
           return { response, result };
@@ -188,7 +200,50 @@ async function callGemini(env, input, systemInstruction, options = {}) {
 }
 
 function getGeminiApiKeys(env) {
-  return [...new Set(GEMINI_API_KEY_BINDINGS.map(name => env[name]?.trim()).filter(Boolean))];
+  const seen = new Set();
+  return GEMINI_API_KEY_BINDINGS.map(binding => ({ binding, value: env[binding]?.trim() }))
+    .filter(item => {
+      if (!item.value || seen.has(item.value)) return false;
+      seen.add(item.value);
+      return true;
+    });
+}
+
+async function isGeminiKeyInactive(env, binding) {
+  const now = Date.now();
+  const cachedState = keyStateCache.get(binding);
+  if (cachedState && now - cachedState.checkedAt < KEY_STATE_CACHE_MS) {
+    return cachedState.inactiveUntil > now;
+  }
+  if (!env.GEMINI_KEY_STATE) {
+    keyStateCache.set(binding, { checkedAt: now, inactiveUntil: 0 });
+    return false;
+  }
+  try {
+    const storedValue = await env.GEMINI_KEY_STATE.get(`${KEY_INACTIVE_KV_PREFIX}:${binding}`);
+    const storedUntil = Number(storedValue);
+    const inactiveUntil = Number.isFinite(storedUntil) && storedUntil > now ? storedUntil : 0;
+    keyStateCache.set(binding, { checkedAt: now, inactiveUntil });
+    return inactiveUntil > now;
+  } catch (error) {
+    keyStateCache.set(binding, { checkedAt: now, inactiveUntil: 0 });
+    console.warn(`Could not read ${binding} state from KV; trying the key.`);
+  }
+  return false;
+}
+
+async function markGeminiKeyInactive(env, binding) {
+  const now = Date.now();
+  const inactiveUntil = now + KEY_INACTIVE_TTL_SECONDS * 1000;
+  keyStateCache.set(binding, { checkedAt: now, inactiveUntil });
+  if (!env.GEMINI_KEY_STATE) return;
+  try {
+    await env.GEMINI_KEY_STATE.put(`${KEY_INACTIVE_KV_PREFIX}:${binding}`, String(inactiveUntil), {
+      expirationTtl: KEY_INACTIVE_TTL_SECONDS
+    });
+  } catch (error) {
+    console.warn(`Could not save ${binding} state to KV; this Worker instance will still skip the key temporarily.`);
+  }
 }
 
 function isGeminiKeyError(response, result) {
@@ -197,6 +252,10 @@ function isGeminiKeyError(response, result) {
   return [401, 403, 429].includes(response.status)
     || ['UNAUTHENTICATED', 'PERMISSION_DENIED', 'RESOURCE_EXHAUSTED'].includes(status)
     || /api[_ ]key.{0,30}(invalid|not valid)|invalid.{0,30}api[_ ]key/i.test(message);
+}
+
+function isGeminiQuotaError(response, result) {
+  return response.status === 429 || result?.error?.status === 'RESOURCE_EXHAUSTED';
 }
 
 function extractOutputText(result) {
