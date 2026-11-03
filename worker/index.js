@@ -57,13 +57,36 @@ export default {
       .join('\n');
     const input = `${transcript ? `Recent conversation:\n${transcript}\n\n` : ''}Student's latest question: ${message}\n\nProgram reference (Markdown):\n${knowledge}`;
 
-    const { response: geminiResponse, result } = await callGemini(env, input, SYSTEM_INSTRUCTION);
+    const chatRequestOptions = { maxOutputTokens: 800 };
+    let { response: geminiResponse, result } = await callGemini(env, input, SYSTEM_INSTRUCTION, chatRequestOptions);
 
     if (!geminiResponse.ok) {
       console.error('Gemini request failed:', geminiResponse.status, result?.error?.message || 'Unknown error');
       return json({ error: 'Gemini could not answer right now. Please try again in a moment.' }, 502, corsHeaders);
     }
-    const answer = result.output_text || extractOutputText(result);
+    let answer = result.output_text || extractOutputText(result);
+    if (result.status === 'incomplete') {
+      console.warn('Gemini chat response was incomplete; retrying once.', {
+        totalOutputTokens: result.usage?.total_output_tokens,
+        totalThoughtTokens: result.usage?.total_thought_tokens
+      });
+      ({ response: geminiResponse, result } = await callGemini(env, input, SYSTEM_INSTRUCTION, {
+        ...chatRequestOptions,
+        maxOutputTokens: 1400
+      }));
+      if (!geminiResponse.ok) {
+        console.error('Gemini chat retry failed:', geminiResponse.status, result?.error?.message || 'Unknown error');
+        return json({ error: 'Gemini could not finish the answer. Please try again.' }, 502, corsHeaders);
+      }
+      answer = result.output_text || extractOutputText(result);
+      if (result.status === 'incomplete') {
+        console.error('Gemini chat retry was still incomplete.', {
+          totalOutputTokens: result.usage?.total_output_tokens,
+          totalThoughtTokens: result.usage?.total_thought_tokens
+        });
+        return json({ error: 'Gemini could not finish the answer. Please try again.' }, 502, corsHeaders);
+      }
+    }
     if (!answer) return json({ error: 'Gemini returned an empty answer. Please try asking another way.' }, 502, corsHeaders);
     return json({ answer }, 200, corsHeaders);
   }
@@ -104,19 +127,44 @@ async function handleQuiz(body, env, corsHeaders, knowledge) {
   const schema = structuredClone(QUIZ_RESPONSE_SCHEMA);
   schema.properties.type.enum = ['question', 'recommendation'];
   schema.properties.programs.items.properties.name.enum = knownPrograms;
-  const { response, result } = await callGemini(env, prompt, QUIZ_INSTRUCTION, {
-    maxOutputTokens: 650,
+  const quizRequestOptions = {
+    maxOutputTokens: 1200,
+    thinkingLevel: 'minimal',
     responseFormat: { type: 'text', mime_type: 'application/json', schema }
-  });
+  };
+  let { response, result } = await callGemini(env, prompt, QUIZ_INSTRUCTION, quizRequestOptions);
   if (!response.ok) {
     console.error('Gemini quiz request failed:', response.status, result?.error?.message || 'Unknown error');
     return json({ error: 'I could not create the next quiz step. Please try again.' }, 502, corsHeaders);
   }
 
-  let step;
-  try {
-    step = JSON.parse(result.output_text || extractOutputText(result));
-  } catch {
+  let outputText = result.output_text || extractOutputText(result);
+  let step = parseQuizOutput(outputText);
+  if (!step) {
+    console.warn('Gemini quiz output was not valid JSON; retrying once.', {
+      interactionStatus: result.status || 'unknown',
+      outputLength: outputText.length,
+      totalOutputTokens: result.usage?.total_output_tokens,
+      totalThoughtTokens: result.usage?.total_thought_tokens
+    });
+    ({ response, result } = await callGemini(env, prompt, QUIZ_INSTRUCTION, {
+      ...quizRequestOptions,
+      maxOutputTokens: 1800
+    }));
+    if (!response.ok) {
+      console.error('Gemini quiz retry failed:', response.status, result?.error?.message || 'Unknown error');
+      return json({ error: 'I could not create the next quiz step. Please try again.' }, 502, corsHeaders);
+    }
+    outputText = result.output_text || extractOutputText(result);
+    step = parseQuizOutput(outputText);
+  }
+  if (!step) {
+    console.error('Gemini quiz retry returned invalid JSON.', {
+      interactionStatus: result.status || 'unknown',
+      outputLength: outputText.length,
+      totalOutputTokens: result.usage?.total_output_tokens,
+      totalThoughtTokens: result.usage?.total_thought_tokens
+    });
     return json({ error: 'I could not read the quiz response. Please try again.' }, 502, corsHeaders);
   }
 
@@ -175,7 +223,7 @@ async function callGemini(env, input, systemInstruction, options = {}) {
             model,
             input,
             system_instruction: systemInstruction,
-            generation_config: { temperature: 0.3, max_output_tokens: options.maxOutputTokens || 350, thinking_level: 'minimal' },
+            generation_config: { temperature: 0.3, max_output_tokens: options.maxOutputTokens || 350, thinking_level: options.thinkingLevel || 'low' },
             ...(options.responseFormat ? { response_format: options.responseFormat } : {}),
             store: false
           })
@@ -198,6 +246,23 @@ async function callGemini(env, input, systemInstruction, options = {}) {
     return { response: new Response(null, { status: 502 }), result: {} };
   }
   return { response, result };
+}
+
+function parseQuizOutput(text) {
+  const raw = String(text || '').trim();
+  if (!raw) return null;
+  const unfenced = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+  const candidates = [unfenced];
+  const firstBrace = unfenced.indexOf('{');
+  const lastBrace = unfenced.lastIndexOf('}');
+  if (firstBrace >= 0 && lastBrace > firstBrace) candidates.push(unfenced.slice(firstBrace, lastBrace + 1));
+  for (const candidate of candidates) {
+    try {
+      const parsed = JSON.parse(candidate);
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
+    } catch {}
+  }
+  return null;
 }
 
 function getGeminiApiKeys(env) {

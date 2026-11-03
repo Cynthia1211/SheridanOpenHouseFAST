@@ -16,12 +16,12 @@
     </header>
 
     <nav class="mode-tabs" aria-label="Choose how to explore">
-      <button class="mode-tab is-active" id="chatTab" type="button" aria-selected="true" aria-controls="chatPanel">Ask about programs</button>
-      <button class="mode-tab" id="quizTab" type="button" aria-selected="false" aria-controls="quizPanel">Quick Quiz</button>
+      <button class="mode-tab is-active" id="quizTab" type="button" aria-selected="true" aria-controls="quizPanel">Quick Quiz</button>
       <button class="mode-tab" id="compareTab" type="button" aria-selected="false" aria-controls="comparePanel">Compare programs</button>
+      <button class="mode-tab" id="chatTab" type="button" aria-selected="false" aria-controls="chatPanel">Ask about programs</button>
     </nav>
 
-    <section class="panel chat-panel" id="chatPanel" aria-labelledby="chatTab">
+    <section class="panel chat-panel" id="chatPanel" aria-labelledby="chatTab" hidden>
       <div class="panel-intro"><div><h2>Explore a program</h2><p>Ask about courses, career paths, credentials, or Open House details.</p></div><span class="status-pill"><i id="serviceStatusDot" class="is-loading"></i><span id="serviceStatus">Loading programs…</span></span></div>
       <div class="chat-messages" id="chatMessages" aria-live="polite">
         <div class="message bot">Welcome to Sheridan Open House! 🎓<br>I can help you explore our programs, understand what you’ll learn, and find a path that fits your interests and goals.<br><br>Is there a program you’re interested in? If you’re still exploring, try the <a class="quiz-inline-link" id="quizInlineLink" href="#quizPanel">Quick Quiz</a> and I’ll help you narrow down a recommendation.</div>
@@ -34,7 +34,7 @@
       <div class="data-note chat-footer-actions"><span id="knowledgeStatus" aria-live="polite"></span><button class="text-button reset-chat-button" id="resetChatButton" type="button">Reset chat</button></div>
     </section>
 
-    <section class="panel quiz-panel" id="quizPanel" aria-labelledby="quizTab" hidden>
+    <section class="panel quiz-panel" id="quizPanel" aria-labelledby="quizTab">
       <div class="panel-intro"><div><h2>Not sure where to start?</h2><p>Answer 4–7 questions. I’ll adapt them to your interests and narrow the results to 1–2 programs.</p></div><span class="quiz-count" id="quizCount">Question 1</span></div>
       <div class="quiz-progress" aria-hidden="true"><span id="progressBar"></span></div>
       <div id="quizContent"></div>
