@@ -419,6 +419,7 @@ async function requestQuizStep() {
             : {})
         })),
         knowledge: knowledgeMarkdown,
+        localMode: localQuizMode,
         recommendNow
       })
     }).then(async response => {

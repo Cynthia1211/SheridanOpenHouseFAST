@@ -118,6 +118,10 @@ const QUIZ_RESPONSE_SCHEMA = {
 };
 
 async function handleQuiz(body, env, corsHeaders, knowledge, signal) {
+  // Local mode may use Gemini for the final recommendation, but never for quiz questions.
+  if (body.localMode === true && body.recommendNow !== true) {
+    return json({ error: 'Local quiz mode only allows a final recommendation request.' }, 400, corsHeaders);
+  }
   const answers = Array.isArray(body.answers) ? body.answers.slice(0, 7).filter(item =>
     item && typeof item.question === 'string' && typeof item.answer === 'string'
   ).map(item => {
