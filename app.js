@@ -21,7 +21,7 @@ const welcomeMessage = messages.querySelector('.message.bot').cloneNode(true);
 
 let programs = [];
 let knowledgeMarkdown = '';
-let backgroundTargetLevels = Object.create(null);
+let offlineQuizData = null;
 let chatHistory = [];
 let isSending = false;
 let chatSessionId = 0;
@@ -36,35 +36,20 @@ async function loadKnowledge() {
     programs = parsePrograms(knowledgeMarkdown);
     if (programs.length !== 14) console.warn(`Expected 14 FAST programs; loaded ${programs.length}.`);
     if (programs.length < 2) throw new Error('The knowledge file needs at least two programs.');
-    try {
-      const offlineResponse = await fetch('offline-questions.json');
-      if (!offlineResponse.ok) throw new Error(`Could not load offline questions (${offlineResponse.status}).`);
-      const offlineQuiz = await offlineResponse.json();
-      if (!Array.isArray(offlineQuiz.questions) || offlineQuiz.questions.length < 2) {
-        throw new Error('The offline question bank is empty or invalid.');
-      }
-      const backgroundQuestion = offlineQuiz.questions[0];
-      if (typeof backgroundQuestion.question === 'string' && Array.isArray(backgroundQuestion.options)) {
-        const backgroundOptions = backgroundQuestion.options.filter(option =>
-          typeof option.text === 'string' && Array.isArray(option.target_level)
-        );
-        if (backgroundOptions.length >= 2) {
-          firstQuizQuestion.question = backgroundQuestion.question;
-          firstQuizQuestion.options = backgroundOptions.map(option => option.text);
-          backgroundTargetLevels = Object.fromEntries(backgroundOptions.map(option => [option.text, option.target_level]));
-        }
-      }
-      localQuizQuestionBank.splice(0, localQuizQuestionBank.length, ...offlineQuiz.questions.slice(1)
-        .filter(item => typeof item.question === 'string' && Array.isArray(item.options))
-        .map(item => ({
-          id: Number(item.id),
-          question: item.question,
-          options: item.options.filter(option => typeof option.text === 'string').map(option => option.text)
-        }))
-        .filter(item => Number.isInteger(item.id) && item.options.length >= 2));
-    } catch (error) {
-      console.warn('Offline quiz question bank could not be loaded:', error.message);
+    const offlineResponse = await fetch('offline-questions.json');
+    if (!offlineResponse.ok) throw new Error('Could not load offline-questions.json');
+    const offlineQuiz = await offlineResponse.json();
+    const openingQuestion = offlineQuiz.questions?.[0];
+    const openingOptions = Array.isArray(openingQuestion?.options)
+      ? openingQuestion.options.filter(option => typeof option.text === 'string').map(option => option.text.trim()).filter(Boolean)
+      : [];
+    if (typeof openingQuestion?.question !== 'string' || !openingQuestion.question.trim() || openingOptions.length < 2) {
+      throw new Error('The first offline quiz question is empty or invalid.');
     }
+    firstQuizQuestion.question = openingQuestion.question.trim();
+    firstQuizQuestion.options = openingOptions;
+    firstQuizQuestion.offlineQuestion = openingQuestion;
+    offlineQuizData = offlineQuiz;
     statusNote.textContent = '';
     setServiceStatus('ready', 'Ready to help');
     renderProgramChecklist();
@@ -353,36 +338,83 @@ function addTypingIndicator() {
 }
 
 const firstQuizQuestion = {
-  question: 'Which best describes you right now?',
-  options: [
-    'I’m in high school or just graduated.',
-    'I have work experience and want to learn more.',
-    'I’m exploring different fields.'
-  ]
+  question: '',
+  options: []
 };
 const QUIZ_RESPONSE_TIMEOUT_MS = 3000;
-const ENABLE_LOCAL_QUIZ_FALLBACK = true;
-const localQuizQuestionBank = [];
-let localQuizMode = false;
 let quizQuestions = [firstQuizQuestion];
 let quizAnswers = [];
 let currentQuestion = 0;
 let quizRecommendations = [];
+let quizRecommendationSource = '';
 let quizLoading = false;
 let quizError = '';
+let localQuizMode = false;
+let localQuizFlow = '';
 
-function nextLocalQuizQuestion() {
-  const nextQuestionNumber = quizQuestions.length + 1;
-  return localQuizQuestionBank.find(item => item.id === nextQuestionNumber) || null;
+function findOfflineProgram(name) {
+  const normalize = value => String(value || '').toLowerCase().replace(/\([^)]*\)/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  const candidate = normalize(name);
+  const matches = programs.filter(program => {
+    const known = normalize(program.name);
+    return known === candidate || known.includes(candidate) || candidate.includes(known);
+  });
+  return matches.length === 1 ? matches[0] : null;
 }
 
-function showLocalQuizFallback(controller) {
-  if (!ENABLE_LOCAL_QUIZ_FALLBACK) return false;
-  const fallbackQuestion = quizAnswers.length < 7 ? nextLocalQuizQuestion() : null;
-  if (!fallbackQuestion) return false;
-  localQuizMode = true;
-  controller.abort();
-  quizQuestions.push(fallbackQuestion);
+function nextLocalQuizQuestion() {
+  const flow = offlineQuizData?.flows?.[localQuizFlow];
+  return flow?.questions?.find(item => !quizQuestions.some(question => question.offlineId === item.id)) || null;
+}
+
+function showLocalQuizRecommendations() {
+  const questions = [firstQuizQuestion, ...quizQuestions.slice(1)];
+  const scores = Object.create(null);
+  for (let index = 0; index < quizAnswers.length; index++) {
+    const source = questions[index]?.offlineQuestion;
+    const selectedOption = source?.options?.find(option => option.text === quizAnswers[index]);
+    for (const [path, points] of Object.entries(selectedOption?.path_points || {})) {
+      scores[path] = (scores[path] || 0) + Number(points || 0);
+    }
+  }
+  const rankedPaths = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const paths = offlineQuizData?.recommendations?.[localQuizFlow] || {};
+  const chosen = [];
+  for (const [path, score] of rankedPaths) {
+    if (score <= 0) continue;
+    const recommendation = paths[path];
+    for (const name of recommendation?.programs || []) {
+      const program = findOfflineProgram(name);
+      if (localQuizFlow === 'A' && program && /\(Graduate Certificate\)/i.test(program.name)) continue;
+      if (program && !chosen.some(item => item.name === program.name)) {
+        chosen.push({ name: program.name, reason: `Your answers align with ${recommendation.title}.` });
+      }
+      if (chosen.length >= 2) break;
+    }
+    if (chosen.length >= 2) break;
+  }
+  if (localQuizFlow === 'B') {
+    chosen.sort((a, b) => Number(/\(Graduate Certificate\)/i.test(b.name)) - Number(/\(Graduate Certificate\)/i.test(a.name)));
+  }
+  if (!chosen.length) {
+    quizError = 'The offline quiz could not find a matching program from these answers. Please try again later.';
+    return false;
+  }
+  quizRecommendations = chosen;
+  quizRecommendationSource = 'LOCAL';
+  currentQuestion = quizQuestions.length;
+  return true;
+}
+
+function advanceLocalQuiz() {
+  const next = nextLocalQuizQuestion();
+  if (!next) return showLocalQuizRecommendations();
+  quizQuestions.push({
+    question: next.question,
+    options: next.options.filter(option => typeof option.text === 'string').map(option => option.text),
+    offlineId: next.id,
+    offlineQuestion: next
+  });
   currentQuestion = quizQuestions.length - 1;
   return true;
 }
@@ -393,16 +425,9 @@ async function requestQuizStep() {
   renderQuiz();
   try {
     if (localQuizMode) {
-      const fallbackQuestion = quizAnswers.length < 7 ? nextLocalQuizQuestion() : null;
-      if (fallbackQuestion) {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        quizQuestions.push(fallbackQuestion);
-        currentQuestion = quizQuestions.length - 1;
-        return;
-      }
+      advanceLocalQuiz();
+      return;
     }
-
-    const recommendNow = localQuizMode && !nextLocalQuizQuestion();
     const quizUrl = new URL(window.CHAT_API_URL);
     quizUrl.pathname = quizUrl.pathname.replace(/\/api\/chat\/?$/, '/api/quiz');
     const controller = new AbortController();
@@ -413,14 +438,9 @@ async function requestQuizStep() {
       body: JSON.stringify({
         answers: quizAnswers.map((answer, index) => ({
           question: quizQuestions[index].question,
-          answer,
-          ...(index === 0 && backgroundTargetLevels[answer]
-            ? { target_level: backgroundTargetLevels[answer] }
-            : {})
+          answer
         })),
         knowledge: knowledgeMarkdown,
-        localMode: localQuizMode,
-        recommendNow
       })
     }).then(async response => {
       const result = await response.json().catch(() => ({}));
@@ -428,28 +448,32 @@ async function requestQuizStep() {
       return result;
     });
     let timeoutId;
-    let outcome = await Promise.race([
-      requestPromise.then(result => ({ type: 'response', result }), error => ({ type: 'error', error })),
+    const outcome = await Promise.race([
+      requestPromise.then(result => ({ type: 'response', result })),
       new Promise(resolve => {
         timeoutId = setTimeout(() => resolve({ type: 'timeout' }), QUIZ_RESPONSE_TIMEOUT_MS);
       })
     ]);
     clearTimeout(timeoutId);
-
     if (outcome.type === 'timeout') {
-      if (!recommendNow && showLocalQuizFallback(controller)) return;
-      outcome = await requestPromise.then(result => ({ type: 'response', result }), error => ({ type: 'error', error }));
-    }
-    if (outcome.type === 'error') {
-      if (!recommendNow && showLocalQuizFallback(controller)) return;
-      throw outcome.error;
+      controller.abort();
+      const selectedOption = firstQuizQuestion.offlineQuestion?.options?.find(option => option.text === quizAnswers[0]);
+      localQuizFlow = selectedOption?.flow || '';
+      if (!offlineQuizData?.flows?.[localQuizFlow]) {
+        quizError = 'Could not start the offline quiz for this answer.';
+        return;
+      }
+      localQuizMode = true;
+      advanceLocalQuiz();
+      return;
     }
     const result = outcome.result;
     if (result.type === 'question' && result.question && Array.isArray(result.options) && result.options.length >= 2) {
       quizQuestions.push({ question: result.question, options: result.options });
       currentQuestion = quizQuestions.length - 1;
     } else if (result.type === 'recommendation' && Array.isArray(result.programs) && result.programs.length) {
-      quizRecommendations = result.programs.slice(0, 2);
+      quizRecommendations = result.programs.slice(0, 3);
+      quizRecommendationSource = 'AI';
       currentQuestion = quizQuestions.length;
     } else {
       throw new Error('The quiz service returned an incomplete result. Please try again.');
@@ -469,9 +493,11 @@ function resetQuiz() {
   quizAnswers = [];
   currentQuestion = 0;
   quizRecommendations = [];
-  localQuizMode = false;
+  quizRecommendationSource = '';
   quizLoading = false;
   quizError = '';
+  localQuizMode = false;
+  localQuizFlow = '';
   renderQuiz();
 }
 
@@ -491,7 +517,7 @@ function renderQuiz() {
     card.className = 'result-card';
     const label = document.createElement('p');
     label.className = 'result-label';
-    label.textContent = 'Based on your answers, explore these FAST programs';
+    label.textContent = `Based on your answers, explore these FAST programs · ${quizRecommendationSource || 'AI'}`;
     card.append(label);
     quizRecommendations.forEach((recommendation, index) => {
       const program = programs.find(item => item.name.toLowerCase() === recommendation.name.toLowerCase());
@@ -585,9 +611,14 @@ function renderQuiz() {
     button.textContent = option;
     button.addEventListener('click', () => {
       quizAnswers[currentQuestion] = option;
+      if (currentQuestion === 0) {
+        localQuizMode = false;
+        localQuizFlow = '';
+      }
       quizQuestions = quizQuestions.slice(0, currentQuestion + 1);
       quizAnswers = quizAnswers.slice(0, currentQuestion + 1);
       quizRecommendations = [];
+      quizRecommendationSource = '';
       requestQuizStep();
     });
     list.append(button);
@@ -601,6 +632,7 @@ document.querySelector('#backButton').addEventListener('click', () => {
     quizQuestions = quizQuestions.slice(0, currentQuestion + 1);
     quizAnswers = quizAnswers.slice(0, currentQuestion);
     quizRecommendations = [];
+    quizRecommendationSource = '';
     quizError = '';
     renderQuiz();
   }

@@ -1,7 +1,10 @@
 # Program Name: Cloud Security (Graduate Certificate)
-- **Institution**: Sheridan College
-- **Credential Level**: Ontario College Graduate Certificate (Co-op option available)
-- **Target Students**: Computing and IT professionals looking to specialize in cloud architecture security, risk management, and cloud-native defense strategies.
+- **Credential Level**: Graduate Certificate
+- **Target Students**: graduated students, degree students
+- **Interests**: 
+  - Specialize in cybersecurity, protecting organizations from cyber attacks, cloud defense.
+  - AWS/Azure, cloud computing, cloud infrastructure technologies.
+  - Cyber incident response, threat mitigation, and industry security certifications.
 - **Core Curriculum & Technical Skills**:
   - Cloud Infrastructure: Security architecture across major cloud platforms (AWS, Azure, GCP).
   - Risk & Governance: Cloud compliance, risk assessment, and identity and access management (IAM).
@@ -16,14 +19,16 @@
   - Cloud Solutions Architect (Security)
   - Information Security Analyst
   - Cloud Compliance Specialist
-- **Degree Pathways**: Credits may apply toward advanced studies or professional certifications in cybersecurity.
 
 ---
 
 # Program Name: Computer Programming (Diploma)
-- **Institution**: Sheridan College
-- **Credential Level**: 2-Year Ontario College Diploma (Optional Co-op available)
-- **Target Students**: Individuals seeking a fast-paced, practical foundation in software development, coding fundamentals, and application support.
+- **Credential Level**: Diploma
+- **Target Students**: high school students, graduated students
+- **Interests**: 
+  - Software development, software engineering, fast-track practical coding skills.
+  - Building hands-on projects, interactive web & desktop applications.
+  - Entering the tech industry quickly, becoming a software developer.
 - **Core Curriculum & Technical Skills**:
   - Programming Fundamentals: Object-oriented programming using Java, C#, and Python.
   - Web Development: Front-end and back-end web technologies (HTML, CSS, JavaScript, database connectivity).
@@ -38,36 +43,16 @@
   - Junior Programmer / Analyst
   - Web Developer
   - Software Support Specialist
-- **Degree Pathways**: Direct pathways into Sheridan’s 3-year advanced diplomas or 4-year bachelor's degrees in computing.
 
 ---
 
-# Program Name: Bachelor of Computer Science (Mobile Computing)
-- **Institution**: Sheridan College
-- **Credential Level**: 4-Year Honours Bachelor’s Degree (Mandatory Co-op terms)
-- **Target Students**: Aspiring software engineers and mobile architecture specialists aiming for high-level technical roles in cross-platform and mobile development.
-- **Core Curriculum & Technical Skills**:
-  - Mobile Technologies: Native and cross-platform mobile development (iOS/Swift, Android/Kotlin, React Native).
-  - Advanced Software Engineering: Distributed systems, algorithms, data structures, and enterprise architecture.
-  - Cloud & Backend: Cloud services integration, RESTful APIs, and scalable backend databases (Firebase, SQL/NoSQL).
-  - User Experience: Mobile UI/UX design principles and performance optimization.
-- **Key Program Highlights**:
-  - Intensive mandatory co-op work terms providing robust corporate experience before graduation.
-  - Comprehensive final-year Capstone Project designing and deploying production-ready mobile ecosystems.
-  - Cutting-edge curriculum blending software theory with hands-on application engineering.
-- **Career Paths & Job Titles**:
-  - Mobile Application Developer (iOS/Android)
-  - Full-Stack Software Engineer
-  - Mobile Solutions Architect
-  - UI/UX Software Engineer
-- **Degree Pathways**: Prepares graduates for direct industry entry or advanced graduate studies (Master's programs).
-
----
-
-# Program Name: Bachelor of Computer Science
-- **Institution**: Sheridan College
-- **Credential Level**: 4-Year Honours Bachelor’s Degree (Mandatory Co-op terms)
-- **Target Students**: Students seeking a comprehensive, rigorous foundation in computer science theory, systems analysis, and large-scale software engineering.
+# Program Name: Bachelor of Computer Science (Degree)
+- **Credential Level**: Degree
+- **Target Students**: high school students
+- **Interests**: 
+  - Computer science theory, advanced mathematics, physics, and complex problem-solving.
+  - Building software applications, theoretical research, and core computing foundations.
+  - Long-term goal of working at major tech companies as a software engineer or systems analyst.
 - **Core Curriculum & Technical Skills**:
   - Core Computer Science: Advanced algorithms, data structures, discrete mathematics, and operating systems.
   - Software Architecture: Enterprise software design patterns, full-stack development, and DevOps practices.
@@ -82,14 +67,16 @@
   - Systems Analyst
   - DevOps Engineer
   - Software Architect
-- **Degree Pathways**: Pathway to graduate education (Master of Computer Science or related fields).
 
 ---
 
-# Program Name: Computer Systems Technician – Cyber Security
-- **Institution**: Sheridan College
-- **Credential Level**: 2-Year Ontario College Diploma (Optional Co-op available)
-- **Target Students**: Technology enthusiasts looking to enter the high-demand field of cybersecurity, network defense, and system security administration.
+# Program Name: Computer Systems Technician – Cyber Security (Diploma)
+- **Credential Level**: Diploma
+- **Target Students**: high school students
+- **Interests**: 
+  - Protecting organizations from cyber attacks, ethical hacking, network defense.
+  - Practical security labs, IT security support, and hands-on system administration.
+  - Fast-track entry into network security and infrastructure protection roles.
 - **Core Curriculum & Technical Skills**:
   - Security Fundamentals: Information security principles, cryptography, and risk assessment.
   - Network Defense: Firewall configuration, intrusion detection systems (IDS), and VPN management.
@@ -104,14 +91,16 @@
   - Network Security Analyst
   - IT Security Support Specialist
   - Systems Administrator
-- **Degree Pathways**: Direct laddering options into Sheridan’s advanced diplomas or cyber security degree programs.
 
 ---
 
-# Program Name: Computer Systems Technician – Information Technology Infrastructure Services
-- **Institution**: Sheridan College
-- **Credential Level**: 2-Year Ontario College Diploma (Optional Co-op available)
-- **Target Students**: Hands-on learners interested in building, maintaining, and troubleshooting modern enterprise IT infrastructure and hardware/software networks.
+# Program Name: Computer Systems Technician – Information Technology Infrastructure Services (Diploma)
+- **Credential Level**: Diploma
+- **Target Students**: high school students, graduated students
+- **Interests**: 
+  - Working with cloud technologies, enterprise hardware, and network management.
+  - Intensive practical learning, systems administration, and IT support operations.
+  - Hands-on technical operations, LAN/WAN management, and infrastructure maintenance.
 - **Core Curriculum & Technical Skills**:
   - Infrastructure Services: Server administration, hardware configuration, and data center management.
   - Networking: Local Area Networks (LAN), Wide Area Networks (WAN), and routing protocols.
@@ -126,14 +115,16 @@
   - Network Support Technician
   - Systems Administrator Assistant
   - Infrastructure Operations Technician
-- **Degree Pathways**: Seamless pathway options into 3-year advanced diplomas or computing degrees.
 
 ---
 
-# Program Name: Bachelor of Information Sciences – Cyber Security
-- **Institution**: Sheridan College
-- **Credential Level**: 4-Year Honours Bachelor’s Degree (Mandatory Co-op terms)
-- **Target Students**: Future security leaders wanting an intensive, comprehensive education in digital defense, cryptography, policy, and enterprise threat intelligence.
+# Program Name: Bachelor of Information Sciences – Cyber Security (Degree)
+- **Credential Level**: Degree
+- **Target Students**: high school students
+- **Interests**: 
+  - Protecting organizations from cyber threats, ethical hacking, digital forensics, and security policies.
+  - Advanced mathematics, theoretical cyber defense systems, and security governance.
+  - Pursuing a comprehensive degree leading to high-level cybersecurity analyst or expert roles.
 - **Core Curriculum & Technical Skills**:
   - Advanced Cyber Defense: Ethical hacking, penetration testing, and advanced threat hunting.
   - Digital Forensics: Cybercrime investigation, evidence recovery, and legal compliance.
@@ -148,14 +139,16 @@
   - Penetration Tester / Ethical Hacker
   - Information Security Officer (ISO)
   - Digital Forensics Investigator
-- **Degree Pathways**: Ideal preparation for specialized master's studies and elite professional credentials (e.g., CISSP, CEH).
 
 ---
 
-# Program Name: Game Development – Advanced Programming
-- **Institution**: Sheridan College
-- **Credential Level**: 3-Year Advanced College Diploma (Optional Co-op available)
-- **Target Students**: Programmers and math-minded creators passionate about game engines, 3D graphics programming, and interactive software simulation.
+# Program Name: Game Development – Advanced Programming (Graduate Certificate)
+- **Credential Level**: Graduate Certificate
+- **Target Students**: high school students, graduated students, degree students
+- **Interests**: 
+  - Building software applications, game engine mechanics, and real-time interactive rendering.
+  - Advanced C++/C# programming, 3D math, physics simulations, and graphics pipelines.
+  - Building creative hands-on apps, gaming tech, and simulation software.
 - **Core Curriculum & Technical Skills**:
   - Game Engines & Programming: Advanced C++, C#, and game engine architecture (Unity, Unreal Engine).
   - Graphics & Physics: 3D mathematics, real-time rendering pipelines, and physics simulation.
@@ -170,14 +163,16 @@
   - Engine / Graphics Programmer
   - AI Programmer for Games
   - Software Developer (Interactive Simulation)
-- **Degree Pathways**: Pathways available to degree completion programs in computing and game tech.
 
 ---
 
-# Program Name: Interactive Media Management – Digital Design
-- **Institution**: Sheridan College
-- **Credential Level**: 1-Year Ontario College Graduate Certificate (Field placement included)
-- **Target Students**: Graduates looking to bridge technical skills and creative media design to build immersive digital experiences, web apps, and user interfaces.
+# Program Name: Interactive Media Management – Digital Design (Graduate Certificate)
+- **Credential Level**: Graduate Certificate
+- **Target Students**: high school students, graduated students, degree students
+- **Interests**: 
+  - User experience (UX/UI) design, digital content creation, and front-end interactive production.
+  - Data visualization, multimedia design, and web technology integration.
+  - Combining creative design with practical digital media applications.
 - **Core Curriculum & Technical Skills**:
   - Digital Design & UX/UI: User experience research, wireframing, and interface design principles.
   - Interactive Media Production: Front-end web development, interactive storytelling, and multimedia integration.
@@ -192,14 +187,16 @@
   - Interactive Media Developer
   - Digital Content Producer
   - Front-End Web Designer
-- **Degree Pathways**: Direct professional credential building upon previous undergraduate or diploma studies.
 
 ---
 
-# Program Name: Network Engineering Technology
-- **Institution**: Sheridan College
-- **Credential Level**: 3-Year Advanced College Diploma (Optional Co-op available)
-- **Target Students**: Network enthusiasts desiring a deep dive into enterprise network architecture, routing protocols, automation, and telecommunications.
+# Program Name: Network Engineering Technology (Advanced Diploma)
+- **Credential Level**: Advanced Diploma
+- **Target Students**: high school students
+- **Interests**: 
+  - Managing computer networks, cloud connectivity, enterprise routing & switching.
+  - Hands-on network automation (Python scripting), hardware architecture, and SDN.
+  - Building network infrastructure, telecommunications, and system administration.
 - **Core Curriculum & Technical Skills**:
   - Enterprise Networking: Advanced routing and switching (Cisco CCNP level), wireless networks, and IP telephony.
   - Network Automation: Python scripting for network management, software-defined networking (SDN).
@@ -214,14 +211,16 @@
   - Systems & Network Specialist
   - Network Automation Engineer
   - Telecommunications Analyst
-- **Degree Pathways**: Articulation pathways into Sheridan’s bachelor’s degrees in applied computing.
 
 ---
 
-# Program Name: Operational Technology Cybersecurity
-- **Institution**: Sheridan College
-- **Credential Level**: Ontario College Graduate Certificate
-- **Target Students**: IT/OT professionals aiming to secure critical infrastructure, industrial control systems (ICS), and SCADA networks against modern cyber threats.
+# Program Name: Operational Technology Cybersecurity (Graduate Certificate)
+- **Credential Level**: Graduate Certificate
+- **Target Students**: graduated students, degree students
+- **Interests**: 
+  - Cybersecurity specialization in industrial control systems (ICS), SCADA networks, and critical infrastructure.
+  - Threat detection and vulnerability assessments in manufacturing, energy, and utility systems.
+  - Industry certifications, risk frameworks (IEC 62443), and IT/OT convergence security.
 - **Core Curriculum & Technical Skills**:
   - Industrial Control Systems (ICS): SCADA systems, Programmable Logic Controllers (PLCs), and operational network protocols.
   - OT Security Frameworks: Threat landscape for manufacturing, energy, and utility sectors (IEC 62443 standards).
@@ -236,14 +235,16 @@
   - Industrial Cybersecurity Analyst
   - ICS/SCADA Security Consultant
   - Critical Infrastructure Protection Analyst
-- **Degree Pathways**: Advanced professional credential built on existing technical degrees or diplomas.
 
 ---
 
-# Program Name: Project Management – Information Technology
-- **Institution**: Sheridan College
-- **Credential Level**: 1-Year Ontario College Graduate Certificate (Co-op option available)
-- **Target Students**: Technical and business graduates wanting to master project management methodologies tailored specifically to software development and IT environments.
+# Program Name: Project Management – Information Technology (Graduate Certificate)
+- **Credential Level**: Graduate Certificate
+- **Target Students**: graduated students, degree students
+- **Interests**: 
+  - IT project leadership, Agile/Scrum methodologies, resource allocation, and risk management.
+  - Bridging technical development with business analytics and technology transformation.
+  - Preparing for industry certifications (PMP, PMI-ACP, CSM) and leading software teams.
 - **Core Curriculum & Technical Skills**:
   - Project Management Methodologies: Agile, Scrum, Waterfall, and hybrid project frameworks.
   - IT Resource Management: Budgeting, resource allocation, risk mitigation, and procurement in tech projects.
@@ -258,14 +259,16 @@
   - Scrum Master / Agile Coach
   - Technical Business Analyst
   - Product Owner
-- **Degree Pathways**: Enhances technical degrees or diplomas with professional business management credentials.
 
 ---
 
 # Program Name: Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)
-- **Institution**: Sheridan College
-- **Credential Level**: 3-Year Advanced College Diploma (Optional Co-op available)
-- **Target Students**: Tech-enthusiastic individuals who love coding, want to build full-stack software, master network infrastructure, and seek hands-on problem-solving experience.
+- **Credential Level**: Advanced Diploma
+- **Target Students**: high school students, graduated students
+- **Interests**: 
+  - Full-stack software development, modern web & mobile applications, and enterprise database management.
+  - Network infrastructure, routing, system administration, and DevOps.
+  - Intensive practical learning, rapid career entry, and multi-skill technology engineering.
 - **Core Curriculum & Technical Skills**:
   - Software Engineering & Programming: Java, Java EE, C, C#, and .NET technologies.
   - Web & Mobile Technologies: Modern web development and interactive application design.
@@ -281,14 +284,16 @@
   - Database Administrator / Developer
   - Systems Administrator (Linux / Windows)
   - Web Application Developer
-- **Degree Pathways**: Graduates can apply their credits towards Sheridan’s honours bachelor's degrees in applied computing or related degree-completion programs.
 
 ---
 
 # Program Name: Artificial Intelligence Development and Applications (Graduate Certificate)
-- **Institution**: Sheridan College
-- **Credential Level**: 2-Year Ontario College Graduate Certificate (Includes a mandatory co-op work term or workplace simulation)
-- **Target Students**: Graduates from IT, computer science, or related fields who want to specialize in cutting-edge AI technologies, machine learning, and ethical data-driven solutions.
+- **Credential Level**: Graduate Certificate
+- **Target Students**: graduated students, degree students
+- **Interests**: 
+  - Artificial intelligence, machine learning, neural networks, and deep learning algorithms.
+  - Python for AI, big data analytics, data visualization, and cloud AI integration.
+  - Applied data science, ethics in AI, and deploying smart solutions for industry problems.
 - **Core Curriculum & Technical Skills**:
   - AI & Machine Learning: Introduction to AI, Advanced Python for AI & ML, Neural Networks & Deep Learning.
   - Data Science & Analytics: Data Science, Big Data Analysis and Storage, Data Visualization, Social Media Data Mining & Analysis.
@@ -305,4 +310,3 @@
   - Data Scientist
   - Business Intelligence Analyst
   - Business Transformation Consultant
-  - Featured Activities: Live interactive AI models exhibition, demonstrations from Sheridan's Centre for Applied AI (CAAI), and consultations with faculty members regarding post-grad career tracks.

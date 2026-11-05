@@ -1,171 +1,846 @@
 {
   "quiz_title": "Sheridan College Computing Program Selector",
-  "total_questions": 5,
   "questions": [
     {
-      "id": 1,
-      "question": "Which best describes your current academic or professional background?",
+      "id": "Q1",
+      "question": "Which best describes you?",
       "options": [
         {
           "label": "A",
-          "text": "High school student or recent high school graduate",
-          "target_level": ["diploma", "degree"]
+          "text": "I am currently in high school or recently graduated from high school",
+          "flow": "A"
         },
         {
           "label": "B",
-          "text": "Recent college or university graduate",
-          "target_level": ["grad_certificate", "degree_completion"]
+          "text": "I already have college, university, work experience, or I am changing careers",
+          "flow": "B"
+        }
+      ]
+    }
+  ],
+  "flows": {
+    "A": {
+      "title": "High School Students",
+      "total_questions": 10,
+      "questions": [
+        {
+          "id": "Q2A",
+          "question": "Which subjects do you enjoy the most?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Advanced Mathematics",
+              "path_points": {
+                "path1": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Computer Science",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Physics",
+              "path_points": {
+                "path1": 1,
+                "path4": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "Business",
+              "path_points": {
+                "path5": 1
+              }
+            },
+            {
+              "label": "E",
+              "text": "Arts/Design",
+              "path_points": {
+                "path3": 1
+              }
+            },
+            {
+              "label": "F",
+              "text": "Not sure",
+              "path_points": {}
+            }
+          ]
         },
         {
-          "label": "C",
-          "text": "Working professional seeking skill expansion or career transition",
-          "target_level": ["grad_certificate"]
+          "id": "Q3A",
+          "question": "How comfortable are you with mathematics?",
+          "options": [
+            {
+              "label": "A",
+              "text": "I love advanced math",
+              "path_points": {
+                "path1": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "I am comfortable with math",
+              "path_points": {
+                "path1": 1,
+                "path5": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Math is okay",
+              "path_points": {
+                "path5": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "I prefer not to do a lot of math",
+              "path_points": {
+                "path3": 1,
+                "path4": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q4A",
+          "question": "What sounds most exciting to you?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Building software applications",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Protecting organizations from cyber attacks",
+              "path_points": {
+                "path2": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Designing mobile apps",
+              "path_points": {
+                "path3": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "Working with cloud technologies",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "E",
+              "text": "Analyzing data and finding patterns",
+              "path_points": {
+                "path5": 1
+              }
+            },
+            {
+              "label": "F",
+              "text": "Managing computer networks",
+              "path_points": {
+                "path4": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q5A",
+          "question": "What type of career appeals to you?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Software Developer",
+              "path_points": {
+                "path1": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Cybersecurity Specialist",
+              "path_points": {
+                "path2": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Data Analyst",
+              "path_points": {
+                "path5": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "Cloud Engineer",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "E",
+              "text": "Network Administrator",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "F",
+              "text": "Technology Consultant",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q6A",
+          "question": "How important is a university degree versus a diploma?",
+          "options": [
+            {
+              "label": "A",
+              "text": "I definitely want a bachelor's degree",
+              "path_points": {
+                "path1": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Either is fine",
+              "path_points": {
+                "path1": 1,
+                "path3": 1,
+                "path4": 1,
+                "path5": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "I want the fastest route into employment",
+              "path_points": {
+                "path3": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q7A",
+          "question": "Which work style do you prefer?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Solving difficult theoretical problems",
+              "path_points": {
+                "path1": 1,
+                "path2": 1,
+                "path5": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Building hands-on projects",
+              "path_points": {
+                "path3": 1,
+                "path4": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "A mix of both",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q8A",
+          "question": "Are you interested in learning programming?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Very interested",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Somewhat interested",
+              "path_points": {
+                "path3": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Not sure",
+              "path_points": {}
+            }
+          ]
+        },
+        {
+          "id": "Q9A",
+          "question": "How much hands-on technical work do you enjoy?",
+          "options": [
+            {
+              "label": "A",
+              "text": "A lot",
+              "path_points": {
+                "path3": 1,
+                "path4": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Some",
+              "path_points": {
+                "path3": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Very little",
+              "path_points": {
+                "path1": 1,
+                "path5": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q10A",
+          "question": "What is your long-term goal?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Work at a major tech company",
+              "path_points": {
+                "path1": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Become a cybersecurity expert",
+              "path_points": {
+                "path2": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Build my own app/business",
+              "path_points": {
+                "path3": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "Work in cloud infrastructure",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "E",
+              "text": "Enter the workforce quickly",
+              "path_points": {
+                "path3": 1
+              }
+            },
+            {
+              "label": "F",
+              "text": "Still exploring",
+              "path_points": {}
+            }
+          ]
         }
       ]
     },
-    {
-      "id": 2,
-      "question": "Which broad technological domain excites you the most?",
-      "options": [
+    "B": {
+      "title": "College Graduates, University Graduates, Career Changers",
+      "total_questions": 10,
+      "questions": [
         {
-          "label": "A",
-          "text": "Software Development, Mobile Apps & Game Programming",
-          "track": "software_development"
-        },
-        {
-          "label": "B",
-          "text": "Cybersecurity, Ethical Hacking & Infrastructure Defense",
-          "track": "cybersecurity"
-        },
-        {
-          "label": "C",
-          "text": "Artificial Intelligence, Data Science & Machine Learning",
-          "track": "ai_data"
-        },
-        {
-          "label": "D",
-          "text": "Network Engineering, IT Infrastructure & Systems Administration",
-          "track": "networks_infrastructure"
-        },
-        {
-          "label": "E",
-          "text": "IT Project Management, UX/UI Design & Interactive Media",
-          "track": "management_design"
-        },
-        {
-          "label": "F",
-          "text": "Comprehensive Computer Science Theory & Large-Scale Systems",
-          "track": "computer_science"
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "question": "How long would you like to study before starting your next step?",
-      "options": [
-        {
-          "label": "A",
-          "text": "A shorter program so I can get started as soon as possible",
-          "duration": "short_term"
-        },
-        {
-          "label": "B",
-          "text": "A longer program that lets me explore the subject in depth",
-          "duration": "long_term_in_depth"
-        },
-        {
-          "label": "C",
-          "text": "I’m open to different program lengths",
-          "duration": "no_preference"
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "question": "When you picture your ideal daily tasks in tech, what do you prefer doing?",
-      "options": [
-        {
-          "label": "A",
-          "text": "Writing code, building applications, designing interfaces, or creating interactive game graphics.",
-          "task_preference": "coding_dev"
-        },
-        {
-          "label": "B",
-          "text": "Investigating security threats, auditing vulnerabilities, and defending network environments.",
-          "task_preference": "security_ops"
-        },
-        {
-          "label": "C",
-          "text": "Training smart data models, analyzing big data patterns, and building automated tools.",
-          "task_preference": "ai_analytics"
-        },
-        {
-          "label": "D",
-          "text": "Configuring routers, setting up cloud hardware, and keeping system backbones running smoothly.",
-          "task_preference": "sys_networking"
-        },
-        {
-          "label": "E",
-          "text": "Leading agile sprint teams, planning projects, or designing user-centric web/app interfaces.",
-          "task_preference": "mgmt_ux"
-        }
-      ]
-    },
-    {
-      "id": 5,
-      "question": "When you graduate, what kind of project or real-world impact would you love to focus on?",
-      "options": [
-        {
-          "label": "A",
-          "text": "Building slick mobile apps people use daily, or crafting fun, interactive video games and digital experiences.",
-          "matched_programs": [
-            "Bachelor of Computer Science (Mobile Computing)",
-            "Game Development – Advanced Programming",
-            "Computer Programming (Diploma)"
+          "id": "Q2B",
+          "question": "What best describes you?",
+          "options": [
+            {
+              "label": "A",
+              "text": "College graduate",
+              "path_points": {}
+            },
+            {
+              "label": "B",
+              "text": "University graduate",
+              "path_points": {}
+            },
+            {
+              "label": "C",
+              "text": "Working professional",
+              "path_points": {}
+            },
+            {
+              "label": "D",
+              "text": "Career changer",
+              "path_points": {}
+            }
           ]
         },
         {
-          "label": "B",
-          "text": "Protecting companies from hackers, investigating cyber attacks, or keeping digital and industrial control systems safe.",
-          "matched_programs": [
-            "Cloud Security (Graduate Certificate)",
-            "Computer Systems Technician – Cyber Security",
-            "Bachelor of Information Sciences – Cyber Security",
-            "Operational Technology Cybersecurity"
+          "id": "Q3B",
+          "question": "Do you already have education in technology?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Yes, IT-related",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Some technology background",
+              "path_points": {
+                "path1": 1,
+                "path3": 1,
+                "path4": 1,
+                "path5": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "No",
+              "path_points": {
+                "path1": 1,
+                "path2": 1,
+                "path3": 1,
+                "path4": 1,
+                "path5": 1
+              }
+            }
           ]
         },
         {
-          "label": "C",
-          "text": "Using smart data and AI to solve complex puzzles, automate predictions, or create intelligent solutions.",
-          "matched_programs": [
-            "Artificial Intelligence Development and Applications (Graduate Certificate)"
+          "id": "Q4B",
+          "question": "What is your primary goal?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Higher salary",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Enter technology industry",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Specialize in cybersecurity",
+              "path_points": {
+                "path2": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "Learn cloud computing",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "E",
+              "text": "Become a developer",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            }
           ]
         },
         {
-          "label": "D",
-          "text": "Building and maintaining the backbone technology—ensuring enterprise routers, cloud servers, and networks stay online.",
-          "matched_programs": [
-            "Computer Systems Technician – Information Technology Infrastructure Services",
-            "Network Engineering Technology"
+          "id": "Q5B",
+          "question": "How much programming experience do you have?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Significant",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Some",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Little",
+              "path_points": {
+                "path1": 1,
+                "path3": 1,
+                "path5": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "None",
+              "path_points": {
+                "path1": 1,
+                "path3": 1,
+                "path5": 1
+              }
+            }
           ]
         },
         {
-          "label": "E",
-          "text": "Managing tech teams and project workflows from start to finish, or creating engaging user interface designs without heavy back-end coding.",
-          "matched_programs": [
-            "Project Management – Information Technology",
-            "Interactive Media Management – Digital Design"
+          "id": "Q6B",
+          "question": "Which field interests you the most?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Software Development",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Cybersecurity",
+              "path_points": {
+                "path2": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Cloud Computing",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "Networking",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "E",
+              "text": "Data Analytics",
+              "path_points": {
+                "path5": 1
+              }
+            },
+            {
+              "label": "F",
+              "text": "Artificial Intelligence",
+              "path_points": {
+                "path1": 1,
+                "path5": 1
+              }
+            }
           ]
         },
         {
-          "label": "F",
-          "text": "Designing large-scale enterprise software architectures and mastering core computing theory.",
-          "matched_programs": [
-            "Bachelor of Computer Science",
-            "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)"
+          "id": "Q7B",
+          "question": "How soon do you want to enter the workforce?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Immediately",
+              "path_points": {
+                "path3": 1,
+                "path4": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Within a year",
+              "path_points": {
+                "path3": 1,
+                "path4": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Longer-term education is okay",
+              "path_points": {
+                "path1": 1,
+                "path2": 1,
+                "path5": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q8B",
+          "question": "Which learning style do you prefer?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Intensive practical learning",
+              "path_points": {
+                "path3": 1,
+                "path4": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Academic and theoretical learning",
+              "path_points": {
+                "path1": 1,
+                "path2": 1,
+                "path5": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Combination of both",
+              "path_points": {
+                "path1": 1,
+                "path3": 1,
+                "path4": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q9B",
+          "question": "Are you interested in industry certifications?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Very interested",
+              "path_points": {
+                "path2": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Somewhat interested",
+              "path_points": {
+                "path2": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Not interested",
+              "path_points": {
+                "path1": 1,
+                "path3": 1,
+                "path4": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q10B",
+          "question": "Which technologies excite you the most?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Python and AI",
+              "path_points": {
+                "path5": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Ethical Hacking",
+              "path_points": {
+                "path2": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "AWS/Azure",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "Mobile Apps",
+              "path_points": {
+                "path3": 1,
+                "path4": 1
+              }
+            },
+            {
+              "label": "E",
+              "text": "DevOps",
+              "path_points": {
+                "path3": 1,
+                "path4": 1
+              }
+            },
+            {
+              "label": "F",
+              "text": "Software Engineering",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            }
+          ]
+        },
+        {
+          "id": "Q11B",
+          "question": "What is your ideal role after graduation?",
+          "options": [
+            {
+              "label": "A",
+              "text": "Software Developer",
+              "path_points": {
+                "path1": 1,
+                "path3": 1
+              }
+            },
+            {
+              "label": "B",
+              "text": "Cloud Engineer",
+              "path_points": {
+                "path4": 1
+              }
+            },
+            {
+              "label": "C",
+              "text": "Cybersecurity Analyst",
+              "path_points": {
+                "path2": 1
+              }
+            },
+            {
+              "label": "D",
+              "text": "DevOps Engineer",
+              "path_points": {
+                "path3": 1,
+                "path4": 1
+              }
+            },
+            {
+              "label": "E",
+              "text": "Data Analyst",
+              "path_points": {
+                "path5": 1
+              }
+            },
+            {
+              "label": "F",
+              "text": "Systems Administrator",
+              "path_points": {
+                "path4": 1
+              }
+            }
           ]
         }
       ]
     }
-  ]
+  },
+  "recommendations": {
+    "A": {
+      "path1": {
+        "title": "Computer Science Degree",
+        "programs": [
+          "Bachelor of Computer Science",
+          "Bachelor of Computer Science (Mobile Computing)"
+        ]
+      },
+      "path2": {
+        "title": "Cyber Security Degree",
+        "programs": [
+          "Bachelor of Information Sciences – Cyber Security",
+          "Computer Systems Technician – Cyber Security"
+        ]
+      },
+      "path3": {
+        "title": "Software Development Diploma",
+        "programs": [
+          "Computer Programming (Diploma)",
+          "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)",
+          "Game Development – Advanced Programming"
+        ]
+      },
+      "path4": {
+        "title": "Cloud & Infrastructure",
+        "programs": [
+          "Computer Systems Technician – Information Technology Infrastructure Services",
+          "Network Engineering Technology"
+        ]
+      },
+      "path5": {
+        "title": "Data & Analytics",
+        "programs": [
+          "Interactive Media Management – Digital Design"
+        ]
+      }
+    },
+    "B": {
+      "path1": {
+        "title": "Software Development",
+        "programs": [
+          "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)",
+          "Computer Programming (Diploma)",
+          "Honours Bachelor of Computer Science"
+        ]
+      },
+      "path2": {
+        "title": "Cyber Security",
+        "programs": [
+          "Cloud Security (Graduate Certificate)",
+          "Operational Technology Cybersecurity (Graduate Certificate)"
+        ]
+      },
+      "path3": {
+        "title": "Software Development",
+        "programs": [
+          "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)",
+          "Computer Programming (Diploma)",
+          "Honours Bachelor of Computer Science"
+        ]
+      },
+      "path4": {
+        "title": "Cloud & Infrastructure",
+        "programs": [
+          "Internet Communications Technology",
+          "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)",
+          "Cloud Security (Graduate Certificate)"
+        ]
+      },
+      "path5": {
+        "title": "Data & Analytics",
+        "programs": [
+          "Artificial Intelligence Development and Applications (Graduate Certificate)",
+          "Project Management – Information Technology (Graduate Certificate)",
+          "Interactive Media Management – Digital Design (Graduate Certificate)"
+        ]
+      }
+    }
+  }
 }
