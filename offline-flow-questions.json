@@ -1,0 +1,470 @@
+[
+  {
+    "id": "flow_a",
+    "questions": {
+      "A1": {
+        "question": "What type of program are you looking for?",
+        "options": [
+          {
+            "label": "A",
+            "text": "A degree program (4 years)",
+            "next_question": "A2A"
+          },
+          {
+            "label": "B",
+            "text": "A diploma or advanced diploma (2–3 years)",
+            "next_question": "A2B"
+          },
+          {
+            "label": "C",
+            "text": "I’m open to either",
+            "next_question": "A2C"
+          }
+        ]
+      },
+      "A2A": {
+        "question": "How interested are you in programming?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I enjoy programming",
+            "result": {
+              "primary": "Bachelor of Computer Science (Degree)",
+              "secondary": "Bachelor of Information Sciences – Cyber Security (Degree)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "I’m open to some programming",
+            "result": {
+              "primary": "Bachelor of Information Sciences – Cyber Security (Degree)",
+              "secondary": null
+            }
+          },
+          {
+            "label": "C",
+            "text": "I’d prefer a program with less programming",
+            "result": {
+              "primary": "Bachelor of Computer Science (Degree)",
+              "secondary": "Bachelor of Information Sciences – Cyber Security (Degree)"
+            }
+          }
+        ]
+      },
+      "A2B": {
+        "question": "How important is a co-op opportunity to you?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I’m looking for a program with co-op",
+            "next_question": "A3A"
+          },
+          {
+            "label": "B",
+            "text": "Co-op isn’t a priority for me",
+            "next_question": "A3B"
+          },
+          {
+            "label": "C",
+            "text": "I’m open to either",
+            "next_question": "A3B"
+          }
+        ]
+      },
+      "A3A": {
+        "question": "How interested are you in programming?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I enjoy programming",
+            "result": {
+              "primary": "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)",
+              "secondary": "Network Engineering Technology (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "I’m open to some programming",
+            "result": {
+              "primary": "Network Engineering Technology (Advanced Diploma)",
+              "secondary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)"
+            }
+          },
+          {
+            "label": "C",
+            "text": "I’d prefer a program with less programming",
+            "result": {
+              "primary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)",
+              "secondary": "Network Engineering Technology (Advanced Diploma)"
+            }
+          }
+        ]
+      },
+      "A3B": {
+        "question": "How interested are you in programming?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I enjoy programming",
+            "result": {
+              "primary": "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)",
+              "secondary": "Computer Programming (Diploma)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "I’m open to some programming",
+            "next_question": "A4"
+          },
+          {
+            "label": "C",
+            "text": "I’d prefer a program with less programming",
+            "result": {
+              "primary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)",
+              "secondary": "Computer Systems Technician – Cyber Security (Diploma)"
+            }
+          }
+        ]
+      },
+      "A4": {
+        "question": "Which area interests you more?",
+        "options": [
+          {
+            "label": "A",
+            "text": "Networking and IT infrastructure",
+            "result": {
+              "primary": "Network Engineering Technology (Advanced Diploma)",
+              "secondary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "Cybersecurity",
+            "result": {
+              "primary": "Computer Systems Technician – Cyber Security (Diploma)",
+              "secondary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)"
+            }
+          }
+        ]
+      },
+      "A2C": {
+        "question": "How important is a co-op opportunity to you?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I’m looking for a program with co-op",
+            "next_question": "A5"
+          },
+          {
+            "label": "B",
+            "text": "Co-op isn’t a priority for me",
+            "next_question": "A3B"
+          },
+          {
+            "label": "C",
+            "text": "I’m open to either",
+            "next_question": "A6"
+          }
+        ]
+      },
+      "A5": {
+        "question": "How interested are you in programming?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I enjoy programming",
+            "result": {
+              "primary": "Bachelor of Computer Science (Degree)",
+              "secondary": "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "I’m open to some programming",
+            "result": {
+              "primary": "Bachelor of Information Sciences – Cyber Security (Degree)",
+              "secondary": "Network Engineering Technology (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "C",
+            "text": "I’d prefer a program with less programming",
+            "result": {
+              "primary": "Bachelor of Information Sciences – Cyber Security (Degree)",
+              "secondary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)"
+            }
+          }
+        ]
+      },
+      "A6": {
+        "question": "How interested are you in programming?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I enjoy programming",
+            "result": {
+              "primary": "Bachelor of Computer Science (Degree)",
+              "secondary": "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "I’m open to some programming",
+            "result": {
+              "primary": "Bachelor of Information Sciences – Cyber Security (Degree)",
+              "secondary": "Network Engineering Technology (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "C",
+            "text": "I’d prefer a program with less programming",
+            "next_question": "A6C"
+          }
+        ]
+      },
+      "A6C": {
+        "question": "Which area interests you more?",
+        "options": [
+          {
+            "label": "A",
+            "text": "Networking and IT infrastructure",
+            "result": {
+              "primary": "Network Engineering Technology (Advanced Diploma)",
+              "secondary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "Cybersecurity",
+            "result": {
+              "primary": "Bachelor of Information Sciences – Cyber Security (Degree)",
+              "secondary": "Computer Systems Technician – Cyber Security (Diploma)"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "flow_b",
+    "questions": {
+      "B1": {
+        "question": "How much time are you looking to spend in a program?",
+        "options": [
+          {
+            "label": "A",
+            "text": "About 1–2 years (graduate certificate)",
+            "next_question": "B2A"
+          },
+          {
+            "label": "B",
+            "text": "About 2–3 years (diploma or advanced diploma)",
+            "redirect_to_flow_a": "A2B"
+          },
+          {
+            "label": "C",
+            "text": "About 4 years (degree)",
+            "redirect_to_flow_a": "A2A"
+          },
+          {
+            "label": "D",
+            "text": "I’m open to different program lengths",
+            "next_question": "B2D"
+          }
+        ]
+      },
+      "B2A": {
+        "question": "Which subject area interests you most?",
+        "options": [
+          {
+            "label": "A",
+            "text": "Programming and software development",
+            "result": {
+              "primary": "Game Development – Advanced Programming (Graduate Certificate)",
+              "secondary": "Interactive Media Management – Digital Design (Graduate Certificate)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "Cloud computing and networking",
+            "result": {
+              "primary": "Cloud Security (Graduate Certificate)",
+              "secondary": "Operational Technology Cybersecurity (Graduate Certificate)"
+            }
+          },
+          {
+            "label": "C",
+            "text": "Artificial intelligence and data",
+            "result": {
+              "primary": "Artificial Intelligence Development and Applications (Graduate Certificate)",
+              "secondary": "Project Management – Information Technology (Graduate Certificate)"
+            }
+          },
+          {
+            "label": "D",
+            "text": "Project and technology management",
+            "result": {
+              "primary": "Project Management – Information Technology (Graduate Certificate)",
+              "secondary": null
+            }
+          }
+        ]
+      },
+      "B2D": {
+        "question": "How important is a co-op opportunity to you?",
+        "options": [
+          {
+            "label": "A",
+            "text": "I’m looking for a program with co-op",
+            "next_question": "B3"
+          },
+          {
+            "label": "B",
+            "text": "Co-op isn’t a priority for me",
+            "next_question": "B4"
+          },
+          {
+            "label": "C",
+            "text": "I’m open to either",
+            "next_question": "B5"
+          }
+        ]
+      },
+      "B3": {
+        "question": "Which subject area interests you most?",
+        "options": [
+          {
+            "label": "A",
+            "text": "Programming and software development",
+            "result": {
+              "primary": "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)",
+              "secondary": "Bachelor of Computer Science (Degree)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "Artificial intelligence and data",
+            "result": {
+              "primary": "Artificial Intelligence Development and Applications (Graduate Certificate)",
+              "secondary": "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "C",
+            "text": "Cloud computing and networking",
+            "result": {
+              "primary": "Network Engineering Technology (Advanced Diploma)",
+              "secondary": "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "D",
+            "text": "Cybersecurity",
+            "result": {
+              "primary": "Operational Technology Cybersecurity (Graduate Certificate)",
+              "secondary": "Bachelor of Information Sciences – Cyber Security (Degree)"
+            }
+          },
+          {
+            "label": "E",
+            "text": "Project and technology management",
+            "result": {
+              "primary": "Project Management – Information Technology (Graduate Certificate)",
+              "secondary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)"
+            }
+          }
+        ]
+      },
+      "B4": {
+        "question": "Which subject area interests you most?",
+        "options": [
+          {
+            "label": "A",
+            "text": "Programming and software development",
+            "result": {
+              "primary": "Game Development – Advanced Programming (Graduate Certificate)",
+              "secondary": "Computer Programming (Diploma)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "Artificial intelligence and data",
+            "result": {
+              "primary": "Artificial Intelligence Development and Applications (Graduate Certificate)",
+              "secondary": "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "C",
+            "text": "Cloud computing and networking",
+            "result": {
+              "primary": "Cloud Security (Graduate Certificate)",
+              "secondary": "Network Engineering Technology (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "D",
+            "text": "Cybersecurity",
+            "result": {
+              "primary": "Operational Technology Cybersecurity (Graduate Certificate)",
+              "secondary": "Computer Systems Technician – Cyber Security (Diploma)"
+            }
+          },
+          {
+            "label": "E",
+            "text": "Project and technology management",
+            "result": {
+              "primary": "Project Management – Information Technology (Graduate Certificate)",
+              "secondary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)"
+            }
+          }
+        ]
+      },
+      "B5": {
+        "question": "Which subject area interests you most?",
+        "options": [
+          {
+            "label": "A",
+            "text": "Programming and software development",
+            "result": {
+              "primary": "Computer Programming (Diploma)",
+              "secondary": "Game Development – Advanced Programming (Graduate Certificate)"
+            }
+          },
+          {
+            "label": "B",
+            "text": "Artificial intelligence and data",
+            "result": {
+              "primary": "Artificial Intelligence Development and Applications (Graduate Certificate)",
+              "secondary": "Computer Systems Technology – Software Development and Network Engineering (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "C",
+            "text": "Cloud computing and networking",
+            "result": {
+              "primary": "Cloud Security (Graduate Certificate)",
+              "secondary": "Network Engineering Technology (Advanced Diploma)"
+            }
+          },
+          {
+            "label": "D",
+            "text": "Cybersecurity",
+            "result": {
+              "primary": "Operational Technology Cybersecurity (Graduate Certificate)",
+              "secondary": "Computer Systems Technician – Cyber Security (Diploma)"
+            }
+          },
+          {
+            "label": "E",
+            "text": "Project and technology management",
+            "result": {
+              "primary": "Project Management – Information Technology (Graduate Certificate)",
+              "secondary": "Computer Systems Technician – Information Technology Infrastructure Services (Diploma)"
+            }
+          }
+        ]
+      }
+    }
+  }
+]

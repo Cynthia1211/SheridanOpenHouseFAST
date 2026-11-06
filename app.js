@@ -236,6 +236,7 @@ compareTab.addEventListener('click', () => switchMode('compare'));
 messages.addEventListener('click', event => {
   if (!event.target.closest('#quizInlineLink')) return;
   event.preventDefault();
+  resetQuiz();
   switchMode('quiz');
   quizTab.focus();
 });
@@ -341,7 +342,7 @@ const firstQuizQuestion = {
   question: '',
   options: []
 };
-const QUIZ_RESPONSE_TIMEOUT_MS = 3000;
+const QUIZ_RESPONSE_TIMEOUT_MS = 99000;
 let quizQuestions = [firstQuizQuestion];
 let quizAnswers = [];
 let currentQuestion = 0;
@@ -351,6 +352,7 @@ let quizLoading = false;
 let quizError = '';
 let localQuizMode = false;
 let localQuizFlow = '';
+let quizRequestController = null;
 
 function findOfflineProgram(name) {
   const normalize = value => String(value || '').toLowerCase().replace(/\([^)]*\)/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
@@ -423,6 +425,8 @@ async function requestQuizStep() {
   quizLoading = true;
   quizError = '';
   renderQuiz();
+  const controller = new AbortController();
+  quizRequestController = controller;
   try {
     if (localQuizMode) {
       advanceLocalQuiz();
@@ -430,7 +434,6 @@ async function requestQuizStep() {
     }
     const quizUrl = new URL(window.CHAT_API_URL);
     quizUrl.pathname = quizUrl.pathname.replace(/\/api\/chat\/?$/, '/api/quiz');
-    const controller = new AbortController();
     const requestPromise = fetch(quizUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -479,16 +482,23 @@ async function requestQuizStep() {
       throw new Error('The quiz service returned an incomplete result. Please try again.');
     }
   } catch (error) {
-    quizError = error.message.includes('Failed to fetch')
-      ? 'Could not connect to the quiz service. Please check your connection and try again.'
-      : error.message;
+    if (!controller.signal.aborted) {
+      quizError = error.message.includes('Failed to fetch')
+        ? 'Could not connect to the quiz service. Please check your connection and try again.'
+        : error.message;
+    }
   } finally {
-    quizLoading = false;
-    renderQuiz();
+    if (quizRequestController === controller) {
+      quizRequestController = null;
+      quizLoading = false;
+      renderQuiz();
+    }
   }
 }
 
 function resetQuiz() {
+  quizRequestController?.abort();
+  quizRequestController = null;
   quizQuestions = [firstQuizQuestion];
   quizAnswers = [];
   currentQuestion = 0;
