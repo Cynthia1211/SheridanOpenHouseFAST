@@ -146,20 +146,9 @@ async function handleQuiz(body, env, corsHeaders, knowledge, signal) {
   }
 
   const answeredTopics = new Set(answers.slice(1).map(item => getQuizTopic(item.question)).filter(Boolean));
-  const durationAnswer = answers.find(item => getQuizTopic(item.question) === 'duration')?.answer || '';
-  const candidateDurations = [...new Set(candidates.map(program => program.durationLabel))];
-  const durationImpliesLongProgram = durationAnswer
-    ? isNoPreference(durationAnswer) || durationAnswerStartsAtTwoYears(durationAnswer)
-    : candidateDurations.length === 1 && durationAnswerStartsAtTwoYears(candidateDurations[0]);
-
-  const topicOrder = isHighSchoolApplicant
-    ? ['credential', 'coop', 'interest']
-    : [
-        ...(hasDistinctChoices(candidates, 'duration') ? ['duration'] : []),
-        ...(durationImpliesLongProgram ? ['credential'] : []),
-        'coop',
-        'interest'
-      ];
+  // Credential options include their typical program duration, so ask this once
+  // instead of asking adults separate duration and credential questions.
+  const topicOrder = ['credential', 'coop', 'interest'];
   for (const topic of topicOrder) {
     if (answeredTopics.has(topic)) continue;
     const options = getQuizOptions(candidates, topic);
@@ -361,13 +350,6 @@ function getQuizOptions(programs, topic) {
   return distinctGroups.map(group => group.text);
 }
 
-function hasDistinctChoices(programs, topic) {
-  if (topic === 'duration') return new Set(programs.map(program => program.durationLabel).filter(Boolean)).size > 1;
-  if (topic === 'credential') return new Set(programs.map(program => program.credential).filter(Boolean)).size > 1;
-  if (topic === 'coop' || topic === 'interest') return getQuizOptions(programs, topic).length > 1;
-  return false;
-}
-
 function filterProgramsForAnswer(programs, topic, answer) {
   const value = String(answer || '').trim();
   if (isNoPreference(value)) return programs;
@@ -391,13 +373,6 @@ function filterProgramsForAnswer(programs, topic, answer) {
 
 function isNoPreference(value) {
   return /no (?:duration|preference)|doesn.?t matter|open to (?:either|different)|is open to either/i.test(String(value || ''));
-}
-
-function durationAnswerStartsAtTwoYears(value) {
-  const match = String(value || '').match(/\d+/);
-  if (match) return Number(match[0]) >= 2;
-  const firstWord = String(value || '').match(/\b(one|two|three|four|five|six|seven|eight|nine)\b/i)?.[1]?.toLowerCase();
-  return ['two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'].includes(firstWord);
 }
 
 function findProgramName(knownPrograms, candidate) {
