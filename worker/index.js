@@ -284,8 +284,8 @@ function getInterestTags(text) {
 
 function getQuizTopic(question) {
   const value = String(question || '').toLowerCase();
-  if (/program duration|duration preference|how long|length of (?:the )?program|years? (?:would|do|are)/.test(value)) return 'duration';
-  if (/credential|education level|qualification|diploma|degree type/.test(value)) return 'credential';
+  if (/program duration|duration preference|how long|how much time|length of (?:the )?program|years? (?:would|do|are)/.test(value)) return 'duration';
+  if (/credential|education level|qualification|diploma|degree type|type of program|program type/.test(value)) return 'credential';
   if (/co.?op/.test(value)) return 'coop';
   if (/area of study|area interests|interest(?:s)? you|what .*interest|career area/.test(value)) return 'interest';
   return '';
